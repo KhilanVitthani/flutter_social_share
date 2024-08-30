@@ -198,3 +198,4 @@ These methods will return "success" if they successfully jump to the correspondi
 
 
 # flutter_social_share
+# flutter_social_share
