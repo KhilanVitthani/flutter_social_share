@@ -204,8 +204,7 @@ These methods will return "success" if they successfully jump to the correspondi
 ```
 
 
-### Checkout the full example [here](https://github.com/OpenFlutter/flutter_social_share/blob/master/example/lib/main.dart) 
+### Checkout the full example [here](https://github.com/khilanvitthani/flutter_social_share/blob/main/example/lib/main.dart) 
 
 
-# flutter_social_share
 # flutter_social_share
