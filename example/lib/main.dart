@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_social_share/file_type.dart';
-import 'package:flutter_social_share/flutter_social_share.dart';
+import 'package:flutter_social_share_plugin/file_type.dart';
+import 'package:flutter_social_share_plugin/flutter_social_share.dart';
 import 'package:image_picker/image_picker.dart';
 
 ///sharing platform
