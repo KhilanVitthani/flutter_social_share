@@ -55,6 +55,22 @@ string.xml:
 </resources>
 ```
 
+### Setup Whatsapp
+
+Make sure you add whatsapp in plist.
+
+````<key>LSApplicationQueriesSchemes</key>
+        <array>
+            <string>whatsapp</string>
+        </array>
+````
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+...
+    <queries>
+        <package android:name="com.whatsapp" />
+    </queries>
+...
+</manifest>
 
 #### IOS
     
@@ -143,9 +159,6 @@ import 'package:flutter_social_share/flutter_social_share.dart';
 #### shareToWhatsApp({String msg,String imagePath})  
 #### shareToWhatsApp4Biz({String msg,String imagePath})  (only android)
 #### shareWhatsAppPersonalMessage(String message ,String phoneNumber)
-
-### instagram
-#### shareToInstagram({String filePath, FileType fileType})
 
 ### telegram
 #### shareToTelegram({String msg})
