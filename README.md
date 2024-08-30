@@ -57,12 +57,8 @@ string.xml:
 
 ### Setup Whatsapp
 
-Make sure you add whatsapp in plist.
+Make sure you add whatsapp in AndroidManifest.xml.
 
-````<key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>whatsapp</string>
-        </array>
 ````
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 ...
@@ -71,6 +67,7 @@ Make sure you add whatsapp in plist.
     </queries>
 ...
 </manifest>
+````
 
 #### IOS
     
