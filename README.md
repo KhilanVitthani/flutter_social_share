@@ -55,6 +55,19 @@ string.xml:
 </resources>
 ```
 
+### Setup Whatsapp
+
+Make sure you add whatsapp in AndroidManifest.xml.
+
+````
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+...
+    <queries>
+        <package android:name="com.whatsapp" />
+    </queries>
+...
+</manifest>
+````
 
 #### IOS
     
@@ -144,9 +157,6 @@ import 'package:flutter_social_share/flutter_social_share.dart';
 #### shareToWhatsApp4Biz({String msg,String imagePath})  (only android)
 #### shareWhatsAppPersonalMessage(String message ,String phoneNumber)
 
-### instagram
-#### shareToInstagram({String filePath, FileType fileType})
-
 ### telegram
 #### shareToTelegram({String msg})
 
@@ -194,8 +204,7 @@ These methods will return "success" if they successfully jump to the correspondi
 ```
 
 
-### Checkout the full example [here](https://github.com/OpenFlutter/flutter_social_share/blob/master/example/lib/main.dart) 
+### Checkout the full example [here](https://github.com/khilanvitthani/flutter_social_share/blob/main/example/lib/main.dart) 
 
 
-# flutter_social_share
 # flutter_social_share
