@@ -1,5 +1,5 @@
 package com.example.flutter_social_share;
-
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -34,6 +34,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import java.util.Collections;
 
 /**
  * FlutterSocialSharePlugin
@@ -49,6 +50,7 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
   final private static String _methodInstagramShare = "instagram_share";
   final private static String _methodTelegramShare = "telegram_share";
   final private static String _methodSmsShare = "sms_share";
+  final private static String _methodMailShare = "mail_share";
 
 
   private Activity activity;
@@ -132,6 +134,13 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
       case _methodSmsShare:
         msg = call.argument("msg");
         shareToSms(msg, result);
+        break;
+      case _methodMailShare:
+        msg = call.argument("msg");
+        String subject = call.argument("subject");
+        List<String> recipients = call.argument("receipients"); // This retrieves a list of recipients
+
+        shareToMail(msg,subject,recipients, result);
         break;
       default:
         result.notImplemented();
@@ -270,6 +279,13 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
       result.error("error", var9.toString(), "");
     }
   }
+
+  /**
+   * share to Sms
+   *
+   * @param msg                String
+   * @param result             Result
+   */
   private void shareToSms(String msg, Result result) {
     try {
       // Create the Uri for the SMS scheme
@@ -290,6 +306,46 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
       result.error("ERROR", e.toString(), null);
     }
   }
+
+  /**
+   * share to mail
+   *
+   * @param msg                String
+   * @param subject                String
+   * @param recipients                String
+   * @param result             Result
+   */
+  private void shareToMail(String msg, String subject, List<String> recipients, Result result) {
+    try {
+      Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+      emailIntent.setData(Uri.parse("mailto:")); // Only email apps should handle this
+
+      // Set the subject and message
+      emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject != null ? subject : ""); // Handle null subject
+      emailIntent.putExtra(Intent.EXTRA_TEXT, msg != null ? msg : ""); // Handle null message
+
+      // Check if recipients is not null and not empty
+      if (recipients != null && !recipients.isEmpty()) {
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, recipients.toArray(new String[0])); // Convert List to Array
+      }
+
+      // Create chooser to select email client
+      Intent chooser = Intent.createChooser(emailIntent, "Choose an email client");
+
+      // Verify that there are email clients available
+      if (chooser.resolveActivity(activity.getPackageManager()) != null) {
+        activity.startActivity(chooser);
+        result.success("Email app opened successfully."); // Success message
+      } else {
+        result.error("NO_EMAIL_APP", "No EMAIL app installed on the device.", null);
+      }
+    } catch (ActivityNotFoundException e) {
+      result.error("NO_EMAIL_APP", "No EMAIL app installed on the device.", null);
+    } catch (Exception e) {
+      result.error("ERROR", e.toString(), null);
+    }
+  }
+
 
 
   /**

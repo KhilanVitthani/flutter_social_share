@@ -3,7 +3,7 @@ import UIKit
 import FBSDKShareKit
 import PhotosUI
 import MessageUI
-public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDelegate,MFMessageComposeViewControllerDelegate {
+public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate {
     
     
     let _methodWhatsApp = "whatsapp_share";
@@ -15,6 +15,7 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
     let _methodSystemShare = "system_share";
     let _methodTelegramShare = "telegram_share";
     let _methodSmsShare = "sms_share";
+    let _methodMailShare = "mail_share";
 
     var result: FlutterResult?
     var documentInteractionController: UIDocumentInteractionController?
@@ -79,6 +80,13 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
         else if(call.method.elementsEqual(_methodSmsShare)){
             let args = call.arguments as? Dictionary<String,Any>
             shareToSms(message: args!["msg"] as! String, result: result )
+        }
+        else if(call.method.elementsEqual(_methodMailShare)){
+            let args = call.arguments as? Dictionary<String,Any>
+            let recipients = args?["receipients"] as? [String]  // Use optional binding
+            let subject = args?["subject"] as? String ?? ""  // Provide a default subject if needed
+            let message = args?["msg"] as! String  // Assuming msg is always present
+            shareToMail(message:message,subject:subject,recipients:recipients, result: result)
         }
         else{
             let args = call.arguments as? Dictionary<String,Any>
@@ -253,6 +261,8 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
     }
 
 
+    //share via Sms
+    //@ text that you want to share.
     func shareToSms(message: String,result: @escaping FlutterResult )
     {if MFMessageComposeViewController.canSendText() {
              let messageVC = MFMessageComposeViewController()
@@ -287,6 +297,61 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
             print("Unknown result")
         }
     }
+
+    //share via Mail
+    //@ text that you want to share.
+    func shareToMail(message: String,subject: String?,recipients: [String]?,result: @escaping FlutterResult )
+    {if MFMailComposeViewController.canSendMail() {
+             let mailComposeVC = MFMailComposeViewController()
+             mailComposeVC.mailComposeDelegate = self
+             if let recipients = recipients, !recipients.isEmpty {
+                         mailComposeVC.setToRecipients(recipients)
+                     } else {
+                         // Optionally, you can handle the case when no recipients are provided
+                         // For example, you can show an alert or set to a default recipient
+                         print("No recipients provided.")
+                         // mailComposeVC.setToRecipients(["default@example.com"]) // Uncomment if you want to set a default
+                     }
+
+        if let subject = subject {
+            mailComposeVC.setSubject(subject)
+        } else {
+            print("No subject provided.") // Optionally handle the case where no subject is provided
+        }
+
+             mailComposeVC.setMessageBody(message, isHTML: false)
+
+             // Presenting the mail compose view controller
+             if let rootVC = UIApplication.shared.delegate?.window??.rootViewController {
+                 rootVC.present(mailComposeVC, animated: true, completion: nil)
+                 result("Success")
+             } else {
+                 result(FlutterError(code: "Presentation Error", message: "Root view controller not found", details: nil))
+             }
+         } else {
+             result(FlutterError(code: "Mail Unavailable", message: "Mail services are not available", details: nil))
+         }
+    }
+public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+    controller.dismiss(animated: true, completion: nil)
+
+    if let error = error {
+        print("Error sending email: \(error.localizedDescription)")
+    } else {
+        switch result {
+        case .sent:
+            print("Email sent successfully.")
+        case .saved:
+            print("Email saved as draft.")
+        case .cancelled:
+            print("Email sending cancelled.")
+        case .failed:
+            print("Failed to send email.")
+        @unknown default:
+            break
+        }
+    }
+}
     //share via system native dialog
     //@ text that you want to share.
     func systemShare(message:String,result: @escaping FlutterResult)  {

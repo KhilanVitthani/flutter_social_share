@@ -17,6 +17,7 @@ enum Share {
   share_instagram,
   share_telegram,
   share_sms,
+  share_mail,
 }
 
 void main() => runApp(MyApp());
@@ -82,6 +83,10 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () => onButtonTap(Share.share_sms),
                 child: const Text('share to sms'),
               ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.share_mail),
+                child: const Text('share to mail'),
+              ),
             ],
           ),
         ),
@@ -112,8 +117,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> onButtonTap(Share share) async {
-    String msg = 'Flutter share is great!!\n Check out full example at https://pub.dev/packages/flutter_social_share';
-    String url = 'https://pub.dev/packages/flutter_social_share';
+    String msg =
+        'Flutter share is great!!\n Check out full example at https://pub.dev/packages/flutter_social_share_plugin';
+    String url = 'https://pub.dev/packages/flutter_social_share_plugin';
 
     String? response;
     final FlutterSocialShare flutterShareMe = FlutterSocialShare();
@@ -154,6 +160,12 @@ class _MyAppState extends State<MyApp> {
         break;
       case Share.share_sms:
         response = await flutterShareMe.shareToSms(msg: msg);
+        break;
+      case Share.share_mail:
+        response =
+            await flutterShareMe.shareToMail(mailBody: msg, mailSubject: 'Flutter Social Share', mailRecipients: [
+          'fluttersocialshare@pub.dev',
+        ]);
         break;
     }
     debugPrint(response);

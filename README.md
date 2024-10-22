@@ -208,16 +208,22 @@ import 'package:flutter_social_share_plugin/flutter_social_share_plugin.dart';
 ### Sms
 #### shareToSms({String msg})
 
+### mail
+#### shareToMail({required String mailBody,String mailSubject,List<String> mailRecipients})
+
 ### system
 #### shareToSystem({String msg})   use system share ui
 
 These methods will return "success" if they successfully jump to the corresponding app.
 
-| Parameter  | Description  |
-| :------------ | :------------ |
-| String msg  | Text message  |
-| String url  | Url url  |
-| String imagePath  |The local path of the image   |
+| Parameter  | Description                        |
+| :------------ |:-----------------------------------|
+| String msg  | Text message                       |
+| String url  | Url url                            |
+| String imagePath  | The local path of the image        |
+| String mailBody  | Text mail Body                     |
+| String mailSubject  | Text Mail subject                  |
+| List<String> mailRecipients  | List of string for mail recipients |
 
 ## Example
 ```
