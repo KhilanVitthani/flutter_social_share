@@ -259,6 +259,3 @@ These methods will return "success" if they successfully jump to the correspondi
 
 
 ### Checkout the full example [here](https://github.com/khilanvitthani/flutter_social_share_plugin/blob/main/example/lib/main.dart) 
-
-
-# flutter_social_share_plugin
