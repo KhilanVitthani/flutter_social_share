@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   # add flutter_social_share_plugin
-  flutter_social_share_plugin: ^0.11.0
+  flutter_social_share_plugin: ^2.0.1
 ```
 ## Setup 
 
