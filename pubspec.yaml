@@ -10,8 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  lint: ^1.6.0
-  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
