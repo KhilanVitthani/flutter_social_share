@@ -91,7 +91,9 @@ class FlutterSocialShare {
   }
 
   ///share to Mail
-  /// [msg] message text you want on Mail
+  /// [mailBody] message text you want on Mail
+  /// [mailSubject] subject text you want on Mail
+  /// [mailRecipients] mail recipients text you want on Mail
   Future<String?> shareToMail({
     required String mailBody,
     String? mailSubject,
