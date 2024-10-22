@@ -227,34 +227,57 @@ These methods will return "success" if they successfully jump to the correspondi
 
 ## Example
 ```
- Container(
+  Container(
           width: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 30),
-              ElevatedButton(
-                  onPressed: () => onButtonTap(Share.twitter),
-                  child: Text('share to twitter')),
+              const SizedBox(height: 30),
+              ElevatedButton(onPressed: pickImage, child: Text('Pick Image')),
+              ElevatedButton(onPressed: pickVideo, child: Text('Pick Video')),
+              ElevatedButton(onPressed: () => onButtonTap(Share.twitter), child: const Text('share to twitter')),
               ElevatedButton(
                 onPressed: () => onButtonTap(Share.whatsapp),
-                child: Text('share to WhatsApp'),
+                child: const Text('share to WhatsApp'),
               ),
               ElevatedButton(
                 onPressed: () => onButtonTap(Share.whatsapp_business),
-                child: Text('share to WhatsApp  Business'),
+                child: const Text('share to WhatsApp Business'),
+              ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.whatsapp_personal),
+                child: const Text('share to WhatsApp Personal'),
               ),
               ElevatedButton(
                 onPressed: () => onButtonTap(Share.facebook),
-                child: Text('share to  FaceBook'),
+                child: const Text('share to  FaceBook'),
+              ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.messenger),
+                child: const Text('share to  Messenger'),
+              ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.share_instagram),
+                child: const Text('share to Instagram'),
+              ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.share_telegram),
+                child: const Text('share to Telegram'),
               ),
               ElevatedButton(
                 onPressed: () => onButtonTap(Share.share_system),
-                child: Text('share to System'),
+                child: const Text('share to System'),
+              ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.share_sms),
+                child: const Text('share to sms'),
+              ),
+              ElevatedButton(
+                onPressed: () => onButtonTap(Share.share_mail),
+                child: const Text('share to mail'),
               ),
             ],
           ),
-        )
+        ),
 ```
 
 
