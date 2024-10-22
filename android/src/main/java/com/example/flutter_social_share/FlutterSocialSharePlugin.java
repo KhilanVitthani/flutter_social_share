@@ -48,6 +48,7 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
   final private static String _methodSystemShare = "system_share";
   final private static String _methodInstagramShare = "instagram_share";
   final private static String _methodTelegramShare = "telegram_share";
+  final private static String _methodSmsShare = "sms_share";
 
 
   private Activity activity;
@@ -127,6 +128,10 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
       case _methodTelegramShare:
         msg = call.argument("msg");
         shareToTelegram(msg, result);
+        break;
+      case _methodSmsShare:
+        msg = call.argument("msg");
+        shareToSms(msg, result);
         break;
       default:
         result.notImplemented();
@@ -265,6 +270,28 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
       result.error("error", var9.toString(), "");
     }
   }
+  private void shareToSms(String msg, Result result) {
+    try {
+      // Create the Uri for the SMS scheme
+      Uri uri = Uri.parse("smsto:");
+      Intent sendIntent = new Intent(Intent.ACTION_SENDTO, uri);
+
+      // Set the SMS body
+      sendIntent.putExtra("sms_body", msg);
+
+      // Start the SMS activity
+      activity.startActivity(sendIntent);
+      result.success("SMS app opened successfully."); // Success message
+    } catch (ActivityNotFoundException e) {
+      // Handle case where no SMS app is found
+      result.error("NO_SMS_APP", "No SMS app installed on the device.", null);
+    } catch (Exception e) {
+      // Handle any other exceptions
+      result.error("ERROR", e.toString(), null);
+    }
+  }
+
+
   /**
    * share whatsapp message to personal number
    *
@@ -293,7 +320,33 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
    * @param result flutterResult
    */
   private void shareInstagramStory(String url, Result result) {
-    if (instagramInstalled()) {
+
+    File file = new File(url);
+    if (!file.exists()) {
+      result.error("File not found", "The specified file does not exist.", "");
+      return;
+    }
+
+    Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file);
+    Log.d("ShareInstagramStory", "File URI: " + fileUri.toString());
+
+    Intent instagramIntent = new Intent(Intent.ACTION_SEND);
+    instagramIntent.setType("image/*");
+    instagramIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+    instagramIntent.setPackage("com.instagram.android");
+    instagramIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+    try {
+      activity.startActivity(instagramIntent);
+      result.success("Success");
+    } catch (ActivityNotFoundException e) {
+      result.error("Instagram not found", "Instagram is not installed on device.", "");
+    } catch (SecurityException e) {
+      result.error("Security Exception", "Permission denied for accessing the file.", "");
+    } catch (Exception e) {
+      result.error("Error", "An unexpected error occurred: " + e.getMessage(), "");
+    }
+    /*if (instagramInstalled()) {
       File file = new File(url);
       Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file);
 
@@ -310,7 +363,7 @@ public class FlutterSocialSharePlugin implements MethodCallHandler, FlutterPlugi
       }
     } else {
       result.error("Instagram not found", "Instagram is not installed on device.", "");
-    }
+    }*/
   }
 
   @Override

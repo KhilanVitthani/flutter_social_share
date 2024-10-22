@@ -2,7 +2,8 @@ import Flutter
 import UIKit
 import FBSDKShareKit
 import PhotosUI
-public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDelegate {
+import MessageUI
+public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDelegate,MFMessageComposeViewControllerDelegate {
     
     
     let _methodWhatsApp = "whatsapp_share";
@@ -13,7 +14,8 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
     let _methodInstagram = "instagram_share";
     let _methodSystemShare = "system_share";
     let _methodTelegramShare = "telegram_share";
-    
+    let _methodSmsShare = "sms_share";
+
     var result: FlutterResult?
     var documentInteractionController: UIDocumentInteractionController?
     
@@ -73,6 +75,10 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
         else if(call.method.elementsEqual(_methodTelegramShare)){
             let args = call.arguments as? Dictionary<String,Any>
             shareToTelegram(message: args!["msg"] as! String, result: result )
+        }
+        else if(call.method.elementsEqual(_methodSmsShare)){
+            let args = call.arguments as? Dictionary<String,Any>
+            shareToSms(message: args!["msg"] as! String, result: result )
         }
         else{
             let args = call.arguments as? Dictionary<String,Any>
@@ -246,6 +252,41 @@ public class SwiftFlutterSocialSharePlugin: NSObject, FlutterPlugin, SharingDele
     
     }
 
+
+    func shareToSms(message: String,result: @escaping FlutterResult )
+    {if MFMessageComposeViewController.canSendText() {
+             let messageVC = MFMessageComposeViewController()
+             messageVC.body = message
+             messageVC.messageComposeDelegate = self // Set the delegate
+
+             // Present the message view controller
+             if let rootVC = UIApplication.shared.delegate?.window??.rootViewController {
+                 rootVC.present(messageVC, animated: true, completion: nil)
+                 result("Sucess");
+             } else {
+                 result(FlutterError(code: "Presentation Error", message: "Root view controller not found", details: nil))
+             }
+         } else {
+             result(FlutterError(code: "SMS Unavailable", message: "SMS services are not available", details: nil))
+         }
+    }
+
+
+    // Implementing the required delegate method
+    public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
+
+        switch result {
+        case .cancelled:
+            print("Message cancelled")
+        case .failed:
+            print("Message failed")
+        case .sent:
+            print("Message sent")
+        @unknown default:
+            print("Unknown result")
+        }
+    }
     //share via system native dialog
     //@ text that you want to share.
     func systemShare(message:String,result: @escaping FlutterResult)  {

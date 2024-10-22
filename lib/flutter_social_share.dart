@@ -16,6 +16,7 @@ class FlutterSocialShare {
   static const String _methodInstagramShare = 'instagram_share';
   static const String _methodSystemShare = 'system_share';
   static const String _methodTelegramShare = 'telegram_share';
+  static const String _methodSmsShare = 'sms_share';
 
   ///share to WhatsApp
   /// [imagePath] is local image
@@ -68,6 +69,18 @@ class FlutterSocialShare {
     String? result;
     try {
       result = await _channel.invokeMethod<String>(_methodTelegramShare, arguments);
+    } catch (e) {
+      return e.toString();
+    }
+    return result;
+  }
+
+  Future<String?> shareToSms({required String msg}) async {
+    final Map<String, dynamic> arguments = <String, dynamic>{};
+    arguments.putIfAbsent('msg', () => msg);
+    String? result;
+    try {
+      result = await _channel.invokeMethod<String>(_methodSmsShare, arguments);
     } catch (e) {
       return e.toString();
     }

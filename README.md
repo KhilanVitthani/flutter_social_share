@@ -1,6 +1,6 @@
-# flutter_social_share
+# flutter_social_share_plugin
 
-[![pub package](https://img.shields.io/pub/v/flutter_social_share.svg)](https://pub.dartlang.org/packages/flutter_social_share)
+[![pub package](https://img.shields.io/pub/v/flutter_social_share_plugin.svg)](https://pub.dartlang.org/packages/flutter_social_share_plugin)
 [![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
 
 Flutter Plugin for sharing contents to social media.
@@ -16,15 +16,15 @@ Feedback and Pull Requests are most welcome!**
 
 ## Getting Started
 
-add `flutter_social_share` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+add `flutter_social_share_plugin` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
 Please check the latest version before installation.
 ```
 dependencies:
   flutter:
     sdk: flutter
-  # add flutter_social_share
-  flutter_social_share: ^0.11.0
+  # add flutter_social_share_plugin
+  flutter_social_share_plugin: ^0.11.0
 ```
 ## Setup 
 
@@ -65,6 +65,41 @@ Make sure you add whatsapp in AndroidManifest.xml.
     <queries>
         <package android:name="com.whatsapp" />
     </queries>
+...
+</manifest>
+````
+### Setup SMS
+
+Make sure you add SMS in AndroidManifest.xml.
+
+````
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+...
+    <uses-permission android:name="android.permission.SEND_SMS" />
+...
+</manifest>
+````
+
+### Setup Instagram
+
+Make sure you add SMS in AndroidManifest.xml.
+
+````
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+...
+    <application>
+...
+   <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+...
+    </application>
 ...
 </manifest>
 ````
@@ -134,20 +169,30 @@ Make sure you add whatsapp in plist.
             <string>twitter</string>
         </array>
 ````
+#### Setup SMS
+
+````<key>LSApplicationQueriesSchemes</key>
+        <array>
+            <string>sms</string>
+        </array>
+````
 
 ## Usage
 
 #### Add the following imports to your Dart code:
 
 ```
-import 'package:flutter_social_share/flutter_social_share.dart';
+import 'package:flutter_social_share_plugin/flutter_social_share_plugin.dart';
 ```
 
 
 ## Methods
 
 ### facebook
-#### shareToFacebook({String msg, String url})   
+#### shareToFacebook({String msg, String url})
+
+### Instagram
+#### shareToInstagram({String url, Result result})   
 
 ### twitter
 #### shareToTwitter({String msg, String url})   
@@ -159,6 +204,9 @@ import 'package:flutter_social_share/flutter_social_share.dart';
 
 ### telegram
 #### shareToTelegram({String msg})
+
+### Sms
+#### shareToSms({String msg})
 
 ### system
 #### shareToSystem({String msg})   use system share ui
@@ -204,7 +252,7 @@ These methods will return "success" if they successfully jump to the correspondi
 ```
 
 
-### Checkout the full example [here](https://github.com/khilanvitthani/flutter_social_share/blob/main/example/lib/main.dart) 
+### Checkout the full example [here](https://github.com/khilanvitthani/flutter_social_share_plugin/blob/main/example/lib/main.dart) 
 
 
-# flutter_social_share
+# flutter_social_share_plugin
