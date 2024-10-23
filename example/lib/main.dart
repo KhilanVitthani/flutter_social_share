@@ -46,7 +46,9 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 30),
               ElevatedButton(onPressed: pickImage, child: Text('Pick Image')),
               ElevatedButton(onPressed: pickVideo, child: Text('Pick Video')),
-              ElevatedButton(onPressed: () => onButtonTap(Share.twitter), child: const Text('share to twitter')),
+              ElevatedButton(
+                  onPressed: () => onButtonTap(Share.twitter),
+                  child: const Text('share to twitter')),
               ElevatedButton(
                 onPressed: () => onButtonTap(Share.whatsapp),
                 child: const Text('share to WhatsApp'),
@@ -136,7 +138,8 @@ class _MyAppState extends State<MyApp> {
       case Share.whatsapp:
         if (file != null) {
           response = await flutterShareMe.shareToWhatsApp(
-              imagePath: file!.path, fileType: videoEnable ? FileType.video : FileType.image);
+              imagePath: file!.path,
+              fileType: videoEnable ? FileType.video : FileType.image);
         } else {
           response = await flutterShareMe.shareToWhatsApp(msg: msg);
         }
@@ -146,7 +149,8 @@ class _MyAppState extends State<MyApp> {
         break;
       case Share.share_instagram:
         response = await flutterShareMe.shareToInstagram(
-            filePath: file!.path, fileType: videoEnable ? FileType.video : FileType.image);
+            filePath: file!.path,
+            fileType: videoEnable ? FileType.video : FileType.image);
         break;
       case Share.share_system:
         response = await flutterShareMe.shareToSystem(msg: msg);
@@ -162,10 +166,12 @@ class _MyAppState extends State<MyApp> {
         response = await flutterShareMe.shareToSms(msg: msg);
         break;
       case Share.share_mail:
-        response =
-            await flutterShareMe.shareToMail(mailBody: msg, mailSubject: 'Flutter Social Share', mailRecipients: [
-          'fluttersocialshare@pub.dev',
-        ]);
+        response = await flutterShareMe.shareToMail(
+            mailBody: msg,
+            mailSubject: 'Flutter Social Share',
+            mailRecipients: [
+              'fluttersocialshare@pub.dev',
+            ]);
         break;
     }
     debugPrint(response);

@@ -1,6 +1,6 @@
 name: flutter_social_share_plugin
 description: Flutter Plugin for sharing contents to social media.You can use it share to Facebook , WhatsApp , Twitter And System Share UI. Support Url and Text.
-version: 2.0.1
+version: 2.0.3
 homepage: https://github.com/KhilanVitthani/flutter_social_share/
 
 environment:
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  lint: ^1.6.0
 
 dev_dependencies:
   flutter_test:
