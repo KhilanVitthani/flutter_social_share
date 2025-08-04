@@ -1,3 +1,6 @@
+# 2.1.4
+- iOS facebook issue fix
+
 # 2.1.3
 - Twitter share crash issue fixed and
 - Whatsapp share fixed for android 
